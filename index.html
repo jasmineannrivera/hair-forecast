@@ -210,15 +210,15 @@
 
     function dragPoint() {
         var lngLat = marker.getLngLat();
-        var newLat = lngLat.lng;
-        var newLng = lngLat.lat;
+        var newLat = lngLat.lat;
+        var newLng = lngLat.lng;
 
 
         var dayArray = ["Today", "Tomorrow", "Next Day"];
         let openWeatherToken = "f3846b0c841256675a19a50e484ca5ff";
 
         $.get("https://api.openweathermap.org/data/2.5/onecall?lat=" + newLat + "&lon=" + newLng + "&exclude=hourly&appid=f3846b0c841256675a19a50e484ca5ff&units=imperial").done(function(data) {
-
+            console.log(data);
             var weatherHTML = "";
             for(var i = 0; i <= 2; i++) {
                 var forecast = data.daily[i];
@@ -237,7 +237,21 @@
         });
     }
 
-
+    // if I figure out how to target tomorrow and third day's timestamp, this is how to find date
+    // function getDate(ts) {
+    //     var date = new Date(ts * 1000);
+    //     var year = date.getFullYear();
+	//
+    //     var month = (1 + date.getMonth()).toString();
+    //     month = month.length > 1 ? month : '0' + month;
+	//
+    //     var day = date.getDate().toString();
+    //     day = day.length > 1 ? day : '0' + day;
+	//
+    //     return month + '/' + day + '/' + year;
+    // }
+	//
+    // console.log(getDate(1600973244));
 
 
     //     $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/" + newLng + "," + newLat).done(function(data) {
