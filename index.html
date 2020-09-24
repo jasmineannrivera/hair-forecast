@@ -218,7 +218,6 @@
         let openWeatherToken = "f3846b0c841256675a19a50e484ca5ff";
 
         $.get("https://api.openweathermap.org/data/2.5/onecall?lat=" + newLat + "&lon=" + newLng + "&exclude=hourly&appid=f3846b0c841256675a19a50e484ca5ff&units=imperial").done(function(data) {
-            console.log(data);
             var weatherHTML = "";
             for(var i = 0; i <= 2; i++) {
                 var forecast = data.daily[i];
@@ -230,6 +229,8 @@
                 weatherHTML += '<p><strong> UV Index: ' + (forecast.uvi).toFixed(0) + ' </strong>' + '</p>';
                 weatherHTML += '<p><strong>Humidity: </strong>' +(forecast.humidity).toFixed(0) + "%" + '</p>';
                 weatherHTML += '<p><strong>Dew Point: </strong>' + (forecast.dew_point).toFixed(0) + '&deg;F</p>';
+                var hair = getHairAdvice(forecast.dew_point);
+                console.log(hair);
                 weatherHTML += '</div>';
             }
 
