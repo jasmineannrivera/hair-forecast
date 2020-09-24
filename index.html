@@ -23,6 +23,7 @@
 	<style>
 		#geocoder {
 
+
 		/*	z-index: 1;*/
 		/*	width: 100%;*/
 		/*	text-align: center;*/
@@ -76,6 +77,7 @@
 		/*}*/
 		.card {
 			background-color: #F29A8A;
+			border: none;
 
 		}
 
@@ -89,6 +91,13 @@
 			color: white;
 			text-decoration: none;
 		}
+		.mapboxgl-ctrl-geocoder {
+
+			background-color: #f2c6c1;
+			border: none;
+			box-shadow: none;
+		}
+
 
 	</style>
 </head>
@@ -110,6 +119,9 @@
 
 
 <script src="js/jquery-2.2.4.js"></script>
+
+
+
 <script>
 
     "use strict";
@@ -167,12 +179,8 @@
     });
 
     geocoder.on('result', e => {
-
         let lon = e.result.center[0];
         let lat = e.result.center[1];
-        console.log(e.result)
-        console.log(lon);
-        console.log(lat);
         $.get("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly&appid=f3846b0c841256675a19a50e484ca5ff&units=imperial").done(function(data) {
             console.log(data);
                 var dayArray = ["Today", "Tomorrow", "Next Day"];
@@ -208,68 +216,6 @@
 
 
 
-
-    // var mapboxToken = "pk.eyJ1IjoiamFzbWluZWFubnJpdmVyYSIsImEiOiJjazZ0dHhheWowMndlM21tdGl3anJqYW81In0.tKJmouaLKN8yxyceD5rIUw";
-    // mapboxgl.accessToken = mapboxToken;
-    // var map = new mapboxgl.Map({
-    //     container: 'map',
-    //     style: 'mapbox://styles/mapbox/streets-v11',
-    //     center: [-98.4916, 29.4252],
-    //     zoom: 10
-    // });
-	//
-    // var lat = 29.424;
-    // var long = -98.4936;
-	//
-    // map.addControl(new MapboxGeocoder({
-    //     accessToken: mapboxgl.accessToken,
-    //     mapboxgl: mapboxgl,
-    //     marker: false
-    // }));
-	//
-	//
-    // var marker = new mapboxgl.Marker({
-    //     draggable: true,
-    //     color: "pink"
-    // })
-    //     .setLngLat([long, lat])
-    //     .addTo(map);
-	//
-    // map.on("moveend", function() {
-    //     marker.setLngLat(map.getCenter());
-    //     dragPoint();
-    // });
-	//
-    // function dragPoint() {
-    //     var lngLat = marker.getLngLat();
-    //     var newLat = lngLat.lat;
-    //     var newLng = lngLat.lng;
-	//
-	//
-
-	//
-    //     $.get("https://api.openweathermap.org/data/2.5/onecall?lat=" + newLat + "&lon=" + newLng + "&exclude=hourly&appid=f3846b0c841256675a19a50e484ca5ff&units=imperial").done(function(data) {
-    //         var weatherHTML = "";
-    //         for(var i = 0; i <= 2; i++) {
-    //             var forecast = data.daily[i];
-    //             var hair = getHairAdvice(forecast.dew_point);
-    //             weatherHTML += '<div class="col-md-3 col-sm-12 card shadow m-4 text-center">';
-    //             weatherHTML += '<h1>' + dayArray[i] + '</h1>';
-    //             weatherHTML += '<h2>' + (forecast.temp.max).toFixed(0) + '&deg;|' +
-    //                 (forecast.temp.min).toFixed(0) + '&deg;F</h2>';
-    //             weatherHTML += '<p><strong>' + forecast.weather[0].description + ' </strong>' + '</p>';
-    //             weatherHTML += '<p><strong> UV Index: ' + (forecast.uvi).toFixed(0) + ' </strong>' + '</p>';
-    //             weatherHTML += '<p><strong>Humidity: </strong>' +(forecast.humidity).toFixed(0) + "%" + '</p>';
-    //             weatherHTML += '<p><strong>Dew Point: </strong>' + (forecast.dew_point).toFixed(0) + '&deg;F</p>';
-    //             weatherHTML += '<p><strong>' + hair.summary + '</strong></p>';
-	//
-    //             weatherHTML += '</div>';
-    //         }
-	//
-    //         $("#insertData").html(weatherHTML);
-    //     });
-    // }
-
     // if I figure out how to target tomorrow and third day's timestamp, this is how to find date
     // function getDate(ts) {
     //     var date = new Date(ts * 1000);
@@ -283,44 +229,6 @@
 	//
     //     return month + '/' + day + '/' + year;
     // }
-	//
-    // console.log(getDate(1600973244));
-
-
-    //     $.get("https://cors-anywhere.herokuapp.com/https://api.darksky.net/forecast/" + darkSkyToken + "/" + newLng + "," + newLat).done(function(data) {
-    //         console.log(data);
-	//
-	//
-    //         var weatherHTML = "";
-    //         for(var i = 0; i <= 2; i++) {
-    //             weatherHTML += '<div class="col-4 card text-center">';
-    //             weatherHTML += '<h1>' + (data.daily.data[i].temperatureHigh).toFixed(0) + '&deg;|' +
-    //                 (data.daily.data[i].temperatureLow).toFixed(0) + '&deg;</h1>';
-    //             weatherHTML += '<p><strong>' + data.daily.data[i].summary + ' </strong>' + '</p>';
-    //             weatherHTML += '<p><strong>Humidity: </strong>' +
-    //                 (data.daily.data[i].humidity * 100).toFixed(0) + "%" + '</p>';
-    //             weatherHTML += '<p><strong>Dew Point: </strong>' + (data.daily.data[i].dewPoint).toFixed(0) + '&deg;</p>';
-    //             weatherHTML += '<p><strong>Chance of Rain: </strong>' + (((data.daily.data[i].precipProbability) * 100).toFixed(0)) + '%</p>';
-    //             var hair = getHairAdvice(data.daily.data[i].dewPoint);
-    //             weatherHTML += '<p><strong>' + hair.summary + '</strong></p>';
-    //             weatherHTML += '<p>' + hair.hairForecast + '</p>';
-    //             weatherHTML += '<p>' + hair.humectant + '<a href = "#" data-toggle="tooltip" title="Humectants are materials used in products to moisturize dry or damaged hair.  They promote moisture retention by attracting water molecules from the local environment and binding them to specific sites along their structure. Ex: Glycerin, Propylene glycol, Hyaluronic acid."> * </a>' + '</p>';
-    //             weatherHTML += '<p>' + hair.emollient + '<a href = "#" data-toggle="tooltip" title="Emollients are usually hydrophobic oils that form films on the surface of the hair, where they often act as anti-humectants or sealers.  They are lubricants and provide increased slip (decreased drag) between adjacent hair strands, which makes detangling much easier. Ex: silicones, oils and butters, proteins and hydrolyzed proteins."> * </a>' + '</p>';
-    //             weatherHTML += '</div>';
-    //         }
-	//
-    //         $("#insertData").html(weatherHTML);
-    //     });
-    // }
-    // marker.on('drag', dragPoint);
-    // dragPoint();
-    // function createWeatherHTML(weather) {
-    //     var forecast = data.daily[i];
-	//
-    // }
-	//
-    // createWeatherHTML();
-    // console.log(createWeatherHTML());
 
 </script>
 
