@@ -4,16 +4,29 @@
 	<meta charset="UTF-8">
 	<title>Weather</title>
 	<meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
+	<script src="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.js"></script>
+	<link href="https://api.mapbox.com/mapbox-gl-js/v1.12.0/mapbox-gl.css" rel="stylesheet" />
 	<link href="https://fonts.googleapis.com/css?family=Noto+Sans+JP&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"  integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js">
 
-
 	<!-- MAPBOX API -->
-	<link rel='stylesheet' href='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.css' type='text/css' />
+	<script src="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.min.js"></script>
+	<link
+			rel="stylesheet"
+			href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
+			type="text/css"
+	/>
+	<!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
+	<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
 	<style>
-
+		#geocoder {
+			z-index: 1;
+			width: 100%;
+			text-align: center;
+			top: 20px;
+		}
 		body {
 			background-color: #DDD5D0;
 			text-align: center;
@@ -87,6 +100,7 @@
 <div class="top-container">
 	<h1 id="title">🌤 Three Day Forecast 🌤</h1>
 </div>
+<div id="geocoder"></div>
 <div class="container">
 	<div class='row' id="insertData"></div>
 </div>
@@ -96,33 +110,10 @@
 </div>
 
 
-
-<!--<div class="lng-lat-input container">-->
-<!--	<input class="lat-input" type="text" placeholder="latitude">-->
-<!--	<br>-->
-<!--	<input class="lng-input" type="text" placeholder="longitude">-->
-<!--	<br>-->
-<!--	<button class="submit">Submit</button>-->
-
-
-
-<br>
-
-
-<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
 <script src="js/jquery-2.2.4.js"></script>
-<script src='https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.4.1/mapbox-gl-geocoder.min.js'></script>
-<script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.53.0/mapbox-gl.js'></script>
-<link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.0/mapbox-gl.css' rel='stylesheet' />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-
-
 <script>
 
-
     "use strict";
-
-
 
     var hairArr = [
         //dry dew (15-30)
@@ -167,76 +158,118 @@
             return hairArr[3];
         }
     }
-    // dry: Algeria
-    // tricky: Rome
-    // optimal: Sydney
-    // humid: Here
-
-
-
-
-
 
     var mapboxToken = "pk.eyJ1IjoiamFzbWluZWFubnJpdmVyYSIsImEiOiJjazZ0dHhheWowMndlM21tdGl3anJqYW81In0.tKJmouaLKN8yxyceD5rIUw";
     mapboxgl.accessToken = mapboxToken;
-    var map = new mapboxgl.Map({
-        container: 'map',
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-98.4916, 29.4252],
-        zoom: 10
-    });
-
-    var lat = 29.424;
-    var long = -98.4936;
-
-    map.addControl(new MapboxGeocoder({
+    var geocoder = new MapboxGeocoder({
         accessToken: mapboxgl.accessToken,
-        mapboxgl: mapboxgl,
-        marker: false
-    }));
+        types: 'country,region,place,postcode,locality,neighborhood',
 
-
-    var marker = new mapboxgl.Marker({
-        draggable: true,
-        color: "pink"
-    })
-        .setLngLat([long, lat])
-        .addTo(map);
-
-    map.on("moveend", function() {
-        marker.setLngLat(map.getCenter());
-        dragPoint();
     });
 
-    function dragPoint() {
-        var lngLat = marker.getLngLat();
-        var newLat = lngLat.lat;
-        var newLng = lngLat.lng;
+    geocoder.on('result', e => {
 
+        let lon = e.result.center[0];
+        let lat = e.result.center[1];
+        console.log(e.result)
+        console.log(lon);
+        console.log(lat);
+        $.get("https://api.openweathermap.org/data/2.5/onecall?lat=" + lat + "&lon=" + lon + "&exclude=hourly&appid=f3846b0c841256675a19a50e484ca5ff&units=imperial").done(function(data) {
+            console.log(data);
+                var dayArray = ["Today", "Tomorrow", "Next Day"];
+                let openWeatherToken = "f3846b0c841256675a19a50e484ca5ff";
+                var weatherHTML = "";
+                    for(var i = 0; i <= 2; i++) {
+                        var forecast = data.daily[i];
+                        var hair = getHairAdvice(forecast.dew_point);
+                        weatherHTML += '<div class="col-md-3 col-sm-12 card shadow m-4 text-center">';
+                        weatherHTML += '<h1>' + dayArray[i] + '</h1>';
+                        weatherHTML += '<h2>' + (forecast.temp.max).toFixed(0) + '&deg;|' +
+                            (forecast.temp.min).toFixed(0) + '&deg;F</h2>';
+                        weatherHTML += '<p><strong>' + forecast.weather[0].description + ' </strong>' + '</p>';
+                        weatherHTML += '<p><strong> UV Index: ' + (forecast.uvi).toFixed(0) + ' </strong>' + '</p>';
+                        weatherHTML += '<p><strong>Humidity: </strong>' +(forecast.humidity).toFixed(0) + "%" + '</p>';
+                        weatherHTML += '<p><strong>Dew Point: </strong>' + (forecast.dew_point).toFixed(0) + '&deg;F</p>';
+                        weatherHTML += '<p><strong>' + hair.summary + '</strong></p>';
 
-        var dayArray = ["Today", "Tomorrow", "Next Day"];
-        let openWeatherToken = "f3846b0c841256675a19a50e484ca5ff";
+                        weatherHTML += '</div>';
+                    }
 
-        $.get("https://api.openweathermap.org/data/2.5/onecall?lat=" + newLat + "&lon=" + newLng + "&exclude=hourly&appid=f3846b0c841256675a19a50e484ca5ff&units=imperial").done(function(data) {
-            var weatherHTML = "";
-            for(var i = 0; i <= 2; i++) {
-                var forecast = data.daily[i];
-                weatherHTML += '<div class="col-md-3 col-sm-12 card shadow m-4 text-center">';
-                weatherHTML += '<h1>' + dayArray[i] + '</h1>';
-                weatherHTML += '<h2>' + (forecast.temp.max).toFixed(0) + '&deg;|' +
-                    (forecast.temp.min).toFixed(0) + '&deg;F</h2>';
-                weatherHTML += '<p><strong>' + forecast.weather[0].description + ' </strong>' + '</p>';
-                weatherHTML += '<p><strong> UV Index: ' + (forecast.uvi).toFixed(0) + ' </strong>' + '</p>';
-                weatherHTML += '<p><strong>Humidity: </strong>' +(forecast.humidity).toFixed(0) + "%" + '</p>';
-                weatherHTML += '<p><strong>Dew Point: </strong>' + (forecast.dew_point).toFixed(0) + '&deg;F</p>';
-                var hair = getHairAdvice(forecast.dew_point);
-                console.log(hair);
-                weatherHTML += '</div>';
-            }
+                    $("#insertData").html(weatherHTML);
 
-            $("#insertData").html(weatherHTML);
         });
-    }
+
+    });
+
+
+
+    geocoder.addTo('#geocoder');
+
+
+
+
+
+
+    // var mapboxToken = "pk.eyJ1IjoiamFzbWluZWFubnJpdmVyYSIsImEiOiJjazZ0dHhheWowMndlM21tdGl3anJqYW81In0.tKJmouaLKN8yxyceD5rIUw";
+    // mapboxgl.accessToken = mapboxToken;
+    // var map = new mapboxgl.Map({
+    //     container: 'map',
+    //     style: 'mapbox://styles/mapbox/streets-v11',
+    //     center: [-98.4916, 29.4252],
+    //     zoom: 10
+    // });
+	//
+    // var lat = 29.424;
+    // var long = -98.4936;
+	//
+    // map.addControl(new MapboxGeocoder({
+    //     accessToken: mapboxgl.accessToken,
+    //     mapboxgl: mapboxgl,
+    //     marker: false
+    // }));
+	//
+	//
+    // var marker = new mapboxgl.Marker({
+    //     draggable: true,
+    //     color: "pink"
+    // })
+    //     .setLngLat([long, lat])
+    //     .addTo(map);
+	//
+    // map.on("moveend", function() {
+    //     marker.setLngLat(map.getCenter());
+    //     dragPoint();
+    // });
+	//
+    // function dragPoint() {
+    //     var lngLat = marker.getLngLat();
+    //     var newLat = lngLat.lat;
+    //     var newLng = lngLat.lng;
+	//
+	//
+
+	//
+    //     $.get("https://api.openweathermap.org/data/2.5/onecall?lat=" + newLat + "&lon=" + newLng + "&exclude=hourly&appid=f3846b0c841256675a19a50e484ca5ff&units=imperial").done(function(data) {
+    //         var weatherHTML = "";
+    //         for(var i = 0; i <= 2; i++) {
+    //             var forecast = data.daily[i];
+    //             var hair = getHairAdvice(forecast.dew_point);
+    //             weatherHTML += '<div class="col-md-3 col-sm-12 card shadow m-4 text-center">';
+    //             weatherHTML += '<h1>' + dayArray[i] + '</h1>';
+    //             weatherHTML += '<h2>' + (forecast.temp.max).toFixed(0) + '&deg;|' +
+    //                 (forecast.temp.min).toFixed(0) + '&deg;F</h2>';
+    //             weatherHTML += '<p><strong>' + forecast.weather[0].description + ' </strong>' + '</p>';
+    //             weatherHTML += '<p><strong> UV Index: ' + (forecast.uvi).toFixed(0) + ' </strong>' + '</p>';
+    //             weatherHTML += '<p><strong>Humidity: </strong>' +(forecast.humidity).toFixed(0) + "%" + '</p>';
+    //             weatherHTML += '<p><strong>Dew Point: </strong>' + (forecast.dew_point).toFixed(0) + '&deg;F</p>';
+    //             weatherHTML += '<p><strong>' + hair.summary + '</strong></p>';
+	//
+    //             weatherHTML += '</div>';
+    //         }
+	//
+    //         $("#insertData").html(weatherHTML);
+    //     });
+    // }
 
     // if I figure out how to target tomorrow and third day's timestamp, this is how to find date
     // function getDate(ts) {
@@ -280,15 +313,15 @@
     //         $("#insertData").html(weatherHTML);
     //     });
     // }
-    marker.on('drag', dragPoint);
-    dragPoint();
-    function createWeatherHTML(weather) {
-        var forecast = data.daily[i];
-
-    }
-
-    createWeatherHTML();
-    console.log(createWeatherHTML());
+    // marker.on('drag', dragPoint);
+    // dragPoint();
+    // function createWeatherHTML(weather) {
+    //     var forecast = data.daily[i];
+	//
+    // }
+	//
+    // createWeatherHTML();
+    // console.log(createWeatherHTML());
 
 </script>
 
