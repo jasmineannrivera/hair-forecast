@@ -22,10 +22,15 @@
 	<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
 	<style>
 		#geocoder {
-			z-index: 1;
-			width: 100%;
-			text-align: center;
-			top: 20px;
+
+		/*	z-index: 1;*/
+		/*	width: 100%;*/
+		/*	text-align: center;*/
+		/*	top: 20px;*/
+		}
+		#insertData {
+			display: flex;
+			justify-content: center;
 		}
 		body {
 			background-color: #DDD5D0;
@@ -55,18 +60,6 @@
 			margin:0 auto;
 		}
 
-		.lng-lat-input{
-			padding-top: 10px;
-		}
-
-		.lng-input {
-			margin-top: 10px;
-		}
-
-		.submit {
-			margin-top: 10px;
-			margin-left: 123px;
-		}
 		.card:first-child {
 			background-color: #BDA0BC;
 
@@ -100,7 +93,7 @@
 <div class="top-container">
 	<h1 id="title">🌤 Three Day Forecast 🌤</h1>
 </div>
-<div id="geocoder"></div>
+<div class="row justify-content-center" id="geocoder"></div>
 <div class="container">
 	<div class='row' id="insertData"></div>
 </div>
