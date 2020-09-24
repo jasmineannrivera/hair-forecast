@@ -85,7 +85,7 @@
 
 
 <div class="top-container">
-	<h1>☔ Three Day Hair Forecast ☔</h1>
+	<h1 id="title">🌤 Three Day Forecast 🌤</h1>
 </div>
 <div class="container">
 	<div class='row' id="insertData"></div>
@@ -116,7 +116,7 @@
 <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v1.3.0/mapbox-gl.css' rel='stylesheet' />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 
-<script src="js/keys.js"></script>
+
 <script>
 
 
@@ -267,6 +267,13 @@
     // }
     marker.on('drag', dragPoint);
     dragPoint();
+    function createWeatherHTML(weather) {
+        var forecast = data.daily[i];
+
+    }
+
+    createWeatherHTML();
+    console.log(createWeatherHTML());
 
 </script>
 
