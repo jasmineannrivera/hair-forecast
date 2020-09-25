@@ -17,89 +17,11 @@
 			href="https://api.mapbox.com/mapbox-gl-js/plugins/mapbox-gl-geocoder/v4.5.1/mapbox-gl-geocoder.css"
 			type="text/css"
 	/>
+	<link rel="stylesheet" href="css/index.css">
 	<!-- Promise polyfill script required to use Mapbox GL Geocoder in IE 11 -->
 	<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/es6-promise@4/dist/es6-promise.auto.min.js"></script>
-	<style>
-		#geocoder {
 
-
-		/*	z-index: 1;*/
-		/*	width: 100%;*/
-		/*	text-align: center;*/
-		/*	top: 20px;*/
-		}
-		#insertData {
-			display: flex;
-			justify-content: center;
-		}
-		body {
-			background-color: #F9D6D2;
-			text-align: center;
-			font-family: 'Noto Sans JP', sans-serif;
-			color: #4E295B;
-
-		}
-
-		h5  {
-			padding-bottom: 20px;
-		}
-
-		.top-container {
-			background-color: #F9D6D2;
-
-		}
-
-		.container {
-			padding-top: 22px;
-		}
-
-		#map {
-			padding-top: 20px;
-			width: 59%;
-			height: 700px;
-			margin:0 auto;
-		}
-
-		/*.card:first-child {*/
-		/*	background-color: #BDA0BC;*/
-
-
-
-		/*}*/
-
-		/*.card:nth-child(2) {*/
-		/*	background-color: #AC92AB;*/
-		/*}*/
-
-		/*.card:nth-child(3) {*/
-		/*	background-color: #9B839A;*/
-		/*}*/
-		.card {
-			background-color: #F29A8A;
-			border: none;
-
-		}
-
-
-		a {
-			color: #14091A;
-			font-size: 18px;
-		}
-
-		a:hover {
-			color: white;
-			text-decoration: none;
-		}
-		.mapboxgl-ctrl-geocoder {
-
-			background-color: #f2c6c1;
-			border: none;
-			box-shadow: none;
-		}
-
-
-	</style>
 </head>
 <body>
 
@@ -107,7 +29,7 @@
 <div class="top-container">
 	<h1 id="title">🌤 Three Day Forecast 🌤</h1>
 </div>
-<div class="row justify-content-center"><h3>Search for your location:</h3></div>
+<div class="row justify-content-center pt-3"><h3>Search for your location:</h3></div>
 <div class="row justify-content-center" id="geocoder"></div>
 <div class="container">
 	<div class='row' id="insertData"></div>

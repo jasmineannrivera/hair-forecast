@@ -1,0 +1,80 @@
+#geocoder {
+
+
+	/*	z-index: 1;*/
+	/*	width: 100%;*/
+	/*	text-align: center;*/
+	/*	top: 20px;*/
+}
+#insertData {
+	display: flex;
+	justify-content: center;
+}
+body {
+	background-color: #F9D6D2;
+	text-align: center;
+	font-family: 'Noto Sans JP', sans-serif;
+	color: #4E295B;
+
+}
+
+h5  {
+	padding-bottom: 20px;
+}
+#title {
+	padding-top: 1rem;
+}
+
+.top-container {
+
+	background-color: #F9D6D2;
+
+}
+
+.container {
+	padding-top: 22px;
+}
+
+#map {
+	padding-top: 20px;
+	width: 59%;
+	height: 700px;
+	margin:0 auto;
+}
+
+/*.card:first-child {*/
+/*	background-color: #BDA0BC;*/
+
+
+
+/*}*/
+
+/*.card:nth-child(2) {*/
+/*	background-color: #AC92AB;*/
+/*}*/
+
+/*.card:nth-child(3) {*/
+/*	background-color: #9B839A;*/
+/*}*/
+.card {
+	background-color: #F29A8A;
+	border: none;
+
+}
+
+
+a {
+	color: #14091A;
+	font-size: 18px;
+}
+
+a:hover {
+	color: white;
+	text-decoration: none;
+}
+.mapboxgl-ctrl-geocoder {
+	margin-top: 1rem;
+	background-color: #f2c6c1;
+	border: none;
+	box-shadow: none;
+}
