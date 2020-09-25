@@ -77,4 +77,6 @@ a:hover {
 	background-color: #f2c6c1;
 	border: none;
 	box-shadow: none;
+	border-radius: 15px;
+
 }

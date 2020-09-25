@@ -25,7 +25,7 @@ var hairArr = [
     //high dew (60+)
     {
         summary: "Frizzy Curls",
-        hairForecast: "You will start to see humectant-induced frizz in this range, especially if you have very porous hair and the dew point has hit 70. You will want to use an anti-humectant to keep that muggy weather out of your hair, and keep a pomade close by to help smooth out mid-day frizz attacks. You will definitely need to find a moisture-humectant tolerance that works for your curls.",
+        hairForecast: "You will start to see humectant-induced frizz in this range, especially if you have very porous hair and the dew point has hit 70. You will want to use an anti-humectant to keep that muggy weather out of your hair. You will definitely need to find a moisture-humectant tolerance that works for your curls.",
         humectant: "Avoid humectants.",
         emollient: "Use emollients."
     }
@@ -72,6 +72,7 @@ geocoder.on('result', e => {
             weatherHTML += '<p><strong>Humidity: </strong>' +(forecast.humidity).toFixed(0) + "%" + '</p>';
             weatherHTML += '<p><strong>Dew Point: </strong>' + (forecast.dew_point).toFixed(0) + '&deg;F</p>';
             weatherHTML += '<p><strong>' + hair.summary + '</strong></p>';
+            weatherHTML += '<p><strong>' + hair.hairForecast + '</strong></p>';
 
             weatherHTML += '</div>';
         }
