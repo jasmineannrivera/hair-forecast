@@ -72,7 +72,9 @@ geocoder.on('result', e => {
             weatherHTML += '<p><strong>Humidity: </strong>' +(forecast.humidity).toFixed(0) + "%" + '</p>';
             weatherHTML += '<p><strong>Dew Point: </strong>' + (forecast.dew_point).toFixed(0) + '&deg;F</p>';
             weatherHTML += '<p><strong>' + hair.summary + '</strong></p>';
-            weatherHTML += '<p><strong>' + hair.hairForecast + '</strong></p>';
+            weatherHTML += '<p>' + hair.hairForecast + '</p>';
+            weatherHTML += '<p><strong>' + hair.humectant + '</strong></p>';
+            weatherHTML += '<p><strong>' + hair.emollient + '</strong></p>';
 
             weatherHTML += '</div>';
         }
